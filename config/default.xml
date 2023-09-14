@@ -11,13 +11,15 @@
 <entry key="SEED">1</entry> 
 <entry key="THREADS">10</entry> 
 
+<entry key="SPLIT_DUPLICATE_SATELLITE_ROUTES">false</entry>
+<entry key="TSP_ALTERNATIVE_STARTING_POINT">true</entry>
 <entry key="SPLIT_IMPROVE_PETAL_LKH">true</entry>
 <entry key="SPLIT_ADD_ALL">false</entry> 
 
 <entry key="MSH_MAX_POOL_SIZE">20000</entry> 
 <entry key="MSH_NUM_ITERATIONS">10000</entry>
 <entry key="MSH_SAMPLING_TIME_LIMIT">60</entry>
-<entry key="MSH_RANDOM_FACTOR_HIGH">7</entry>
+<entry key="MSH_RANDOM_FACTOR_HIGH">12</entry>
 <entry key="MSH_RANDOM_FACTOR_LOW">3</entry>
 <entry key="MSH_ASSEMBLY_TIME_LIMIT">60</entry>
 

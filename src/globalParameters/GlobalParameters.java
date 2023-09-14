@@ -50,6 +50,11 @@ public class GlobalParameters {
 	// MSH  parameters:
 		
 		/**
+		 * Should we add diversity, by solving the TSP with a different matrix than the one used in the split?
+		 */
+		public static final boolean TSP_ALTERNATIVE_STARTING_POINT = GlobalParametersReader.<String>get("TSP_ALTERNATIVE_STARTING_POINT", String.class).equals("false") ? false:true;
+		
+		/**
 		 * Should we use LKH to improve the petals found by the split algorithm?
 		 */
 		public static final boolean SPLIT_IMPROVE_PETAL_LKH = GlobalParametersReader.<String>get("SPLIT_IMPROVE_PETAL_LKH", String.class).equals("false") ? false:true;
@@ -58,6 +63,11 @@ public class GlobalParameters {
 		 * Should we add the routes associated with all the routes in the split graph?
 		 */
 		public static final boolean SPLIT_ADD_ALL = GlobalParametersReader.<String>get("SPLIT_ADD_ALL", String.class).equals("false") ? false:true;
+		
+		/**
+		 * Should we create copies of the routes created for one satellite, to the others?
+		 */
+		public static final boolean SPLIT_DUPLICATE_SATELLITE_ROUTES = GlobalParametersReader.<String>get("SPLIT_DUPLICATE_SATELLITE_ROUTES", String.class).equals("false") ? false:true;
 		
 		
 		/**

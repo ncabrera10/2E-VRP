@@ -1,0 +1,14 @@
+For the configuration of the jam:
+
+-Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx
+-Xmx10000m
+
+########### EXPERIMENTO 3  -  050623 - LArge instances 60,70,80,90 customers MSH #########
+
+cd /Users/nicolas.cabrera-malik/Documents/Work/Thesis/2EVRP/Code/2E-VRP/2E-VRP/
+
+for i in {1..180}; do
+	for j in {1..5}; do
+   		java -Xmx14000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP.jar "ExperimentsAllSets.txt" $i "default.xml" $j 8
+	done
+done

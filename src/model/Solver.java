@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import core.ArrayDistanceMatrix;
@@ -15,6 +16,7 @@ import core.RouteAttribute;
 import core.RoutePool;
 import core.Split;
 import dataStructures.DataHandler;
+import distanceMatrices.DepotToCustomersDistanceMatrix;
 import distanceMatrices.DepotToSatellitesDistanceMatrix;
 import distanceMatrices.SatelliteToCustomersDistanceMatrix;
 import globalParameters.GlobalParameters;
@@ -105,6 +107,12 @@ public class Solver {
 						ArrayDistanceMatrix distances_depot_satellites = null;
 						distances_depot_satellites = new DepotToSatellitesDistanceMatrix(GlobalParameters.INSTANCE_FOLDER+instance_identifier);
 
+				// Depot to customers matrix
+						
+					// Matrix
+						
+						ArrayDistanceMatrix distances_depot_customers = new DepotToCustomersDistanceMatrix(GlobalParameters.INSTANCE_FOLDER+instance_identifier);
+						
 				// Satellites to customers matrix (one per satellite)
 				
 					// Create an arrayList to store all the matrices:
@@ -178,6 +186,11 @@ public class Solver {
 			// 5. Calculates the number of iterations:	
 				
 				int num_iterations = (int)GlobalParameters.MSH_NUM_ITERATIONS/(data.getNbSat()*8);
+				if(GlobalParameters.TSP_ALTERNATIVE_STARTING_POINT) {
+					num_iterations = (int)GlobalParameters.MSH_NUM_ITERATIONS/(data.getNbSat()*12);
+				}
+				
+				
 				int num_iterations_fe = (int)GlobalParameters.MSH_NUM_ITERATIONS/(data.getNbSat()*8);
 				if(data.getNbSat() <= 10) {
 					num_iterations_fe = 1;
@@ -396,6 +409,11 @@ public class Solver {
 							Random random_fi_2 = new Random(GlobalParameters.SEED+150+1000*i);
 							Random random_bi_2 = new Random(GlobalParameters.SEED+160+1000*i);
 							
+							Random random_nn_3 = new Random(GlobalParameters.SEED+170+1000*i);
+							Random random_ni_3 = new Random(GlobalParameters.SEED+180+1000*i);
+							Random random_fi_3 = new Random(GlobalParameters.SEED+190+1000*i);
+							Random random_bi_3 = new Random(GlobalParameters.SEED+200+1000*i);
+							
 						// Initializes the tsp heuristics:
 						
 								// RNN:
@@ -412,6 +430,12 @@ public class Solver {
 								nn_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
 								nn_2.setInitNode(0);
 							
+								NNHeuristic nn_3 = new NNHeuristic(distances_depot_customers); //Here we use the depot to customers matrix
+								nn_3.setRandomized(true);
+								nn_3.setRandomGen(random_nn_3);
+								nn_3.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
+								nn_3.setInitNode(0);
+								
 							// RNI:
 								
 								InsertionHeuristic ni = new InsertionHeuristic(distances_satellite_customers.get(i-1),"NEAREST_INSERTION");
@@ -425,6 +449,12 @@ public class Solver {
 								ni_2.setRandomGen(random_ni_2);
 								ni_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
 								ni_2.setInitNode(0);
+								
+								InsertionHeuristic ni_3 = new InsertionHeuristic(distances_depot_customers,"NEAREST_INSERTION");
+								ni_3.setRandomized(true);
+								ni_3.setRandomGen(random_ni_3);
+								ni_3.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
+								ni_3.setInitNode(0);
 								
 							// RNI:
 								
@@ -440,6 +470,12 @@ public class Solver {
 								fi_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
 								fi_2.setInitNode(0);
 								
+								InsertionHeuristic fi_3 = new InsertionHeuristic(distances_depot_customers,"FARTHEST_INSERTION");
+								fi_3.setRandomized(true);
+								fi_3.setRandomGen(random_fi_3);
+								fi_3.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
+								fi_3.setInitNode(0);
+								
 							// BI:
 								
 								InsertionHeuristic bi = new InsertionHeuristic(distances_satellite_customers.get(i-1),"BEST_INSERTION");
@@ -453,6 +489,12 @@ public class Solver {
 								bi_2.setRandomGen(random_bi_2);
 								bi_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
 								bi_2.setInitNode(0);
+								
+								InsertionHeuristic bi_3 = new InsertionHeuristic(distances_depot_customers,"BEST_INSERTION");
+								bi_3.setRandomized(true);
+								bi_3.setRandomGen(random_bi_3);
+								bi_3.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
+								bi_3.setInitNode(0);
 									
 								
 						// Set up heuristics:
@@ -467,6 +509,11 @@ public class Solver {
 							OrderFirstSplitSecondHeuristic fi_2h = new OrderFirstSplitSecondHeuristic(fi_2, splits.get(i-1));
 							OrderFirstSplitSecondHeuristic bi_2h = new OrderFirstSplitSecondHeuristic(bi_2, splits.get(i-1));
 							
+							OrderFirstSplitSecondHeuristic nn_3h = new OrderFirstSplitSecondHeuristic(nn_3, splits.get(i-1));
+							OrderFirstSplitSecondHeuristic ni_3h = new OrderFirstSplitSecondHeuristic(ni_3, splits.get(i-1));
+							OrderFirstSplitSecondHeuristic fi_3h = new OrderFirstSplitSecondHeuristic(fi_3, splits.get(i-1));
+							OrderFirstSplitSecondHeuristic bi_3h = new OrderFirstSplitSecondHeuristic(bi_3, splits.get(i-1));
+							
 						// Creates sampling functions:
 								
 								
@@ -479,7 +526,12 @@ public class Solver {
 							OrderFirstSplitSecondSampling f_ni_2 = new OrderFirstSplitSecondSampling(ni_2h,num_iterations);
 							OrderFirstSplitSecondSampling f_fi_2 = new OrderFirstSplitSecondSampling(fi_2h,num_iterations);
 							OrderFirstSplitSecondSampling f_bi_2 = new OrderFirstSplitSecondSampling(bi_2h,num_iterations);
-								
+							
+							OrderFirstSplitSecondSampling f_nn_3 = new OrderFirstSplitSecondSampling(nn_3h,num_iterations);
+							OrderFirstSplitSecondSampling f_ni_3 = new OrderFirstSplitSecondSampling(ni_3h,num_iterations);
+							OrderFirstSplitSecondSampling f_fi_3 = new OrderFirstSplitSecondSampling(fi_3h,num_iterations);
+							OrderFirstSplitSecondSampling f_bi_3 = new OrderFirstSplitSecondSampling(bi_3h,num_iterations);
+							
 						// Creates the route pools:
 								
 							RoutePool pool_nn = new RoutePool(i);
@@ -491,6 +543,11 @@ public class Solver {
 							RoutePool pool_ni_2 = new RoutePool(i);
 							RoutePool pool_fi_2 = new RoutePool(i);
 							RoutePool pool_bi_2 = new RoutePool(i);
+							
+							RoutePool pool_nn_3 = new RoutePool(i);
+							RoutePool pool_ni_3 = new RoutePool(i);
+							RoutePool pool_fi_3 = new RoutePool(i);
+							RoutePool pool_bi_3 = new RoutePool(i);
 								
 						// Adds the pools:
 							
@@ -504,6 +561,11 @@ public class Solver {
 							pools.add(pool_fi_2);
 							pools.add(pool_bi_2);
 							
+							pools.add(pool_nn_3);
+							pools.add(pool_ni_3);
+							pools.add(pool_fi_3);
+							pools.add(pool_bi_3);
+							
 						// Sets the route pools for each heuristic:
 							
 							f_nn.setRoutePool(pool_nn);
@@ -515,6 +577,11 @@ public class Solver {
 							f_ni_2.setRoutePool(pool_ni_2);
 							f_fi_2.setRoutePool(pool_fi_2);
 							f_bi_2.setRoutePool(pool_bi_2);
+							
+							f_nn_3.setRoutePool(pool_nn_3);
+							f_ni_3.setRoutePool(pool_ni_3);
+							f_fi_3.setRoutePool(pool_fi_3);
+							f_bi_3.setRoutePool(pool_bi_3);
 								
 						// Adds the sampling function:
 								
@@ -527,7 +594,18 @@ public class Solver {
 							msh.addSamplingFunction(f_ni_2);
 							msh.addSamplingFunction(f_bi_2);
 							msh.addSamplingFunction(f_fi_2);
+							
+							
+							// We only add them to the MSH if selected by the user:
+							
+							if(GlobalParameters.TSP_ALTERNATIVE_STARTING_POINT) {
 								
+								msh.addSamplingFunction(f_nn_3);
+								msh.addSamplingFunction(f_ni_3);
+								msh.addSamplingFunction(f_bi_3);
+								msh.addSamplingFunction(f_fi_3);
+								
+							}
 					}
 	
 		//8. Stops the clock for the initialization time:
@@ -560,6 +638,92 @@ public class Solver {
 			Double FinTime_msh = (double) System.nanoTime();
 			
 			cpu_msh_sampling = (FinTime_msh-IniTime_msh)/1000000000;
+			
+		//10.5 Creates copies of every second echelon route with different satellites. 
+			
+			if(GlobalParameters.SPLIT_DUPLICATE_SATELLITE_ROUTES) {
+				
+				// Step 1: Create a new pool for each satellite
+				
+				ArrayList<RoutePool> pools_for_each_satellite = new ArrayList<RoutePool>();			
+				for(int i = 1; i <= data.getNbSat(); i++) {
+					
+					RoutePool pool = new RoutePool(i);
+					pools_for_each_satellite.add(pool);
+					
+				}
+				
+			// Step 2: Iterate over the existing pools:
+				
+				for(RoutePool pool : pools) {
+					
+					// Step 3: Verify that the pool corresponds to a second echelon pool:
+					
+					if(pool.getSatellite() > 0) {
+						
+						// Step 4: Iterate over the routes of the pool:
+						
+						Iterator<Route> iterator = pool.iterator();
+						
+						while(iterator.hasNext()) {
+						
+							// Step 5: Recover the current route:
+							
+								Route r = iterator.next();
+								
+							// Step 6: Store the current cost:
+								
+								double cost = (double) r.getAttribute(RouteAttribute.COST);
+								
+							// Step 7: Calculate the decrease in cost:
+								
+								
+								double decrease = distances_satellite_customers.get(pool.getSatellite()-1).getDistance(0,r.get(1)) + distances_satellite_customers.get(pool.getSatellite()-1).getDistance(r.get(r.size()-2),0);
+								
+							// For the other satellites:
+								
+								for(int i = 1; i <= data.getNbSat(); i++) {
+									
+									if(i != pool.getSatellite()) {
+										
+										// Step 8: Calculate the increase in cost:
+										
+										double increase = distances_satellite_customers.get(i-1).getDistance(0,r.get(1)) + distances_satellite_customers.get(i-1).getDistance(r.get(r.size()-2),0);
+									
+										// Step 9: Compute the new cost:
+										
+										double new_cost = cost + increase - decrease;
+										
+										// Step 10: Creates a new route:
+										
+											Route r_copy = r.getCopy();
+											r_copy.setAttribute(RouteAttribute.COST, new_cost);
+											
+										// Adds the route to the pool of the satellite:
+											
+											pools_for_each_satellite.get(i-1).add(r_copy);
+											
+									}
+								
+								}
+								
+								
+						}
+						
+						
+					}
+					
+				}
+				
+				// Final step: Adds every pool to the pools that is used by msh:
+				
+				for(int i = 1; i <= data.getNbSat(); i++) {
+					
+					pools.add(pools_for_each_satellite.get(i-1));
+
+				}
+			}
+			
 			
 		//11. Runs the assembly phase of MSH:
 			
@@ -737,6 +901,8 @@ public class Solver {
 					pw.println("Seed;"+GlobalParameters.SEED);
 					pw.println("AddingAllRoutesInTheSplit;"+GlobalParameters.SPLIT_ADD_ALL);
 					pw.println("UsingLKHToImproveRoutes;"+GlobalParameters.SPLIT_IMPROVE_PETAL_LKH);
+					pw.println("CreatingCopiesOfRoutes;"+GlobalParameters.SPLIT_DUPLICATE_SATELLITE_ROUTES);
+					pw.println("TSPDiversificationStrategy;"+GlobalParameters.TSP_ALTERNATIVE_STARTING_POINT);
 					pw.println("InitializationTime(s);"+cpu_initialization);
 					pw.println("TotalTime(s);"+(cpu_msh_sampling+cpu_msh_assembly));
 					pw.println("TotalDistance;"+assembler.objectiveFunction);
@@ -759,6 +925,8 @@ public class Solver {
 					System.out.println("Seed: "+GlobalParameters.SEED);
 					System.out.println("AddingAllRoutesInTheSplit: "+GlobalParameters.SPLIT_ADD_ALL);
 					System.out.println("UsingLKHToImproveRoutes: "+GlobalParameters.SPLIT_IMPROVE_PETAL_LKH);
+					System.out.println("CreatingCopiesOfRoutes: "+GlobalParameters.SPLIT_DUPLICATE_SATELLITE_ROUTES);
+					System.out.println("TSPDiversificationStrategy: "+GlobalParameters.TSP_ALTERNATIVE_STARTING_POINT);
 					System.out.println("InitializationTime(s): "+cpu_initialization);
 					System.out.println("TotalTime(s): "+(cpu_msh_sampling+cpu_msh_assembly));
 					System.out.println("TotalDistance: "+assembler.objectiveFunction);
