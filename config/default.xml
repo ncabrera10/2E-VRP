@@ -4,7 +4,7 @@
 <entry key="INSTANCE_FOLDER">./instances/</entry>
 <entry key="RESULT_FOLDER">./results/</entry> 
 
-<entry key="PRINT_IN_CONSOLE">true</entry>
+<entry key="PRINT_IN_CONSOLE">false</entry>
 <entry key="PRINT_POOLS_TO_FILE">false</entry>
 
 <entry key="PRECISION">4</entry> 
