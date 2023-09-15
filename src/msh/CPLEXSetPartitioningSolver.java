@@ -270,6 +270,10 @@ public class CPLEXSetPartitioningSolver implements AssemblyFunction{
 				 System.out.println("About to start solving the set partitioning model...");
 			 }
 			 
+			 if(GlobalParameters.CPLEX_EMPHASIZE_FEASIBILITY) {
+				 cplex.setParam(IloCplex.Param.Emphasis.MIP, 1);
+			 }
+			 
 			//Solve model:
 			 
 			 cplex.solve();

@@ -50,6 +50,11 @@ public class GlobalParameters {
 	// MSH  parameters:
 		
 		/**
+		 * Should CPLEX focus just on finding the best solution it can?
+		 */
+		public static final boolean CPLEX_EMPHASIZE_FEASIBILITY = GlobalParametersReader.<String>get("CPLEX_EMPHASIZE_FEASIBILITY", String.class).equals("false") ? false:true;
+		
+		/**
 		 * Should we add diversity, by solving the TSP with a different matrix than the one used in the split?
 		 */
 		public static final boolean TSP_ALTERNATIVE_STARTING_POINT = GlobalParametersReader.<String>get("TSP_ALTERNATIVE_STARTING_POINT", String.class).equals("false") ? false:true;

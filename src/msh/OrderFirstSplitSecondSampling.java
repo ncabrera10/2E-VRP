@@ -23,10 +23,14 @@ public class OrderFirstSplitSecondSampling implements SamplingFunction{
 	private int samplesDrawn=0;
 	private RoutePool pool=null;
 	private OptimizationSense sense=JVRAEnv.getOptimizationSense();
+	private String identifier;
+	private Double IniTime;
 	
-	public OrderFirstSplitSecondSampling(OrderFirstSplitSecondHeuristic h,int nSamples){
+	public OrderFirstSplitSecondSampling(OrderFirstSplitSecondHeuristic h,int nSamples,String identifier){
 		this.h=h;
 		this.nSamples=nSamples;
+		this.identifier=identifier;
+		this.IniTime = (double) System.nanoTime();
 	}
 
 	@Override
@@ -37,7 +41,7 @@ public class OrderFirstSplitSecondSampling implements SamplingFunction{
 		VRPSolution s, best=null;
 		int i;
 		//Sampling
-		Double IniTime = (double) System.nanoTime();
+		
 		boolean stop = false;
 		int routes = 0;
 		for(i=1;i<=this.nSamples && !stop;i++){
@@ -82,4 +86,19 @@ public class OrderFirstSplitSecondSampling implements SamplingFunction{
 		this.pool=pool;
 	}
 
+	/**
+	 * @return the identifier
+	 */
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	/**
+	 * @param identifier the identifier to set
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	
 }
