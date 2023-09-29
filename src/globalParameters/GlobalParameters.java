@@ -57,7 +57,9 @@ public class GlobalParameters {
 		/**
 		 * Should we add diversity, by solving the TSP with a different matrix than the one used in the split?
 		 */
-		public static final boolean TSP_ALTERNATIVE_STARTING_POINT = GlobalParametersReader.<String>get("TSP_ALTERNATIVE_STARTING_POINT", String.class).equals("false") ? false:true;
+		public static final boolean TSP_CENTROID_STARTING_POINT = GlobalParametersReader.<String>get("TSP_CENTROID_STARTING_POINT", String.class).equals("false") ? false:true;
+		
+		public static final boolean TSP_DEPOT_STARTING_POINT = GlobalParametersReader.<String>get("TSP_DEPOT_STARTING_POINT", String.class).equals("false") ? false:true;
 		
 		/**
 		 * Should we use LKH to improve the petals found by the split algorithm?
@@ -74,6 +76,10 @@ public class GlobalParameters {
 		 */
 		public static final boolean SPLIT_DUPLICATE_SATELLITE_ROUTES = GlobalParametersReader.<String>get("SPLIT_DUPLICATE_SATELLITE_ROUTES", String.class).equals("false") ? false:true;
 		
+		/**
+		 * Should we try to solve the split using different capacities?
+		 */
+		public static final boolean SPLIT_TRY_CAPACITIES = GlobalParametersReader.<String>get("SPLIT_TRY_CAPACITIES", String.class).equals("false") ? false:true;
 		
 		/**
 		 * Maximum number of routes allowed in each pool

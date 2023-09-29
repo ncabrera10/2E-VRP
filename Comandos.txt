@@ -7,8 +7,31 @@ For the configuration of the jam:
 
 cd /Users/nicolas.cabrera-malik/Documents/Work/Thesis/2EVRP/Code/2E-VRP/2E-VRP/
 
-for i in {1..180}; do
+### v1
+
+for i in {1..234}; do
 	for j in {1..5}; do
-   		java -Xmx14000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP.jar "ExperimentsAllSets.txt" $i "default.xml" $j 8
+   		java -Xmx14000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP.jar "ExperimentsAllSets.txt" $i "v1.xml" $j 8
+	done
+done
+
+### v2
+
+for i in {1..234}; do
+	for j in {1..5}; do
+   		java -Xmx14000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP.jar "ExperimentsAllSets.txt" $i "v2.xml" $j 8
+	done
+done
+
+I
+
+
+208..234!!!!!
+
+### v3
+
+for i in {1..234}; do
+	for j in {1..5}; do
+   		java -Xmx14000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP.jar "ExperimentsAllSets.txt" $i "v3.xml" $j 8
 	done
 done

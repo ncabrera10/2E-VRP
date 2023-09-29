@@ -130,7 +130,6 @@ public class SecondEchelonSplitLKH implements Split{
 				
 				double newCost = lkh.getDistance();
 				
-				
 			// If the distance is better, then we can use this tour instead:
 				
 			if(newCost < iniCost) {

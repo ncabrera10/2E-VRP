@@ -38,6 +38,7 @@ public class CPLEXSetPartitioningSolver implements AssemblyFunction{
 	public ArrayList<Route> solution_se;
 	public ArrayList<ArrayList<Double>> solution_fe_drops;
 	public ArrayList<Integer> solution_se_satellites;
+	public ArrayList<String> solution_se_identifiers;
 	
 	public CPLEXSetPartitioningSolver(int nRequests, int nSatellites,boolean hasTerminals,DataHandler data){
 		this.nRequests=nRequests;
@@ -175,7 +176,7 @@ public class CPLEXSetPartitioningSolver implements AssemblyFunction{
 								
 								satFlow_constraints[route.get(i)-1].addTerm(1,f[route.get(i) + (counter_fe * nSatellites) - 1]);
 								
-								of.addTerm(data.getHandling_costs().get(route.get(i)-1), f[route.get(i) + (counter_fe * nSatellites) - 1]);
+								of.addTerm(data.getHandling_costs().get(route.get(i)), f[route.get(i) + (counter_fe * nSatellites) - 1]);
 								
 							}
 						
@@ -231,7 +232,7 @@ public class CPLEXSetPartitioningSolver implements AssemblyFunction{
 			//Add constraints to the model
 			
 			for(int i = 0;i<nRequests; i++) {
-				cplex.addEq(1,partitioning_constraints[i],"ServeCustomer_"+i);
+				cplex.addEq(1,partitioning_constraints[i],"ServeCustomer_"+i); //Le
 			}
 			
 			for(int i = 0;i<size_fe; i++) {
@@ -296,6 +297,7 @@ public class CPLEXSetPartitioningSolver implements AssemblyFunction{
 				 counter_se = 0;
 				 solution_fe_drops = new ArrayList<ArrayList<Double>>();
 				 solution_se_satellites = new ArrayList<Integer>();
+				 solution_se_identifiers = new ArrayList<String>();
 				 
 			// Iterate overall the routes:
 				 
@@ -334,6 +336,7 @@ public class CPLEXSetPartitioningSolver implements AssemblyFunction{
 								if(cplex.getValue(y[counter_se]) > 0.5){
 									solution_se.add(r);
 									solution_se_satellites.add(pool.getSatellite());
+									solution_se_identifiers.add(pool.getIdentifier());
 								}
 								counter_se++;
 							}

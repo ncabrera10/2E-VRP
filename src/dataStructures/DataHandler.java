@@ -61,6 +61,12 @@ public class DataHandler {
 	private int ms;
 	
 	/**
+	 * Largest demand
+	 */
+	
+	private double largest_demand;
+	
+	/**
 	 * Demands
 	 */
 	private ArrayList<Double> demands;
@@ -151,14 +157,21 @@ public class DataHandler {
 					attrs = line.split(";");
 					
 					nbCustomers = attrs.length;
+					if(path.contains("Set7")) {
+						nbCustomers = attrs.length-2;	
+					}
 					
 					demands = new ArrayList<Double>();
-					for(int i = 0; i < attrs.length; i++) {
+					largest_demand = 0;
+					for(int i = 0; i < nbCustomers; i++) {
 						
 						String[] current_coors = attrs[i].split(",");
 						demands.add(Double.parseDouble(current_coors[2]));
-						
+						if(demands.get(demands.size()-1) > largest_demand) {
+							largest_demand = demands.get(demands.size()-1);
+						}
 					}
+					
 					
 			// 5. Closes the buffered reader:
 					
@@ -321,6 +334,20 @@ public class DataHandler {
 	 */
 	public void setHandling_costs(ArrayList<Double> handling_costs) {
 		this.handling_costs = handling_costs;
+	}
+
+	/**
+	 * @return the largest_demand
+	 */
+	public double getLargest_demand() {
+		return largest_demand;
+	}
+
+	/**
+	 * @param largest_demand the largest_demand to set
+	 */
+	public void setLargest_demand(double largest_demand) {
+		this.largest_demand = largest_demand;
 	}
 	
 	

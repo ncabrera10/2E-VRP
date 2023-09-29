@@ -16,6 +16,7 @@ import core.RouteAttribute;
 import core.RoutePool;
 import core.Split;
 import dataStructures.DataHandler;
+import distanceMatrices.CenterToCustomersDistanceMatrix;
 import distanceMatrices.DepotToCustomersDistanceMatrix;
 import distanceMatrices.DepotToSatellitesDistanceMatrix;
 import distanceMatrices.SatelliteToCustomersDistanceMatrix;
@@ -28,6 +29,7 @@ import split.FirstEchelonEnumerationSingle;
 import split.FirstEchelonSplit;
 import split.SecondEchelonSplit;
 import split.SecondEchelonSplitAll;
+import split.SecondEchelonSplitCapacities;
 import split.SecondEchelonSplitLKH;
 
 /**
@@ -111,8 +113,13 @@ public class Solver {
 				// Depot to customers matrix
 						
 					// Matrix
+						ArrayDistanceMatrix distances_depot_customers = null;
 						
-						ArrayDistanceMatrix distances_depot_customers = new DepotToCustomersDistanceMatrix(GlobalParameters.INSTANCE_FOLDER+instance_identifier);
+						if(GlobalParameters.TSP_DEPOT_STARTING_POINT) {
+							distances_depot_customers = new DepotToCustomersDistanceMatrix(GlobalParameters.INSTANCE_FOLDER+instance_identifier);
+						}else if(GlobalParameters.TSP_CENTROID_STARTING_POINT) {
+							distances_depot_customers = new CenterToCustomersDistanceMatrix(GlobalParameters.INSTANCE_FOLDER+instance_identifier);
+						}
 						
 				// Satellites to customers matrix (one per satellite)
 				
@@ -159,11 +166,27 @@ public class Solver {
 						
 						if(GlobalParameters.SPLIT_IMPROVE_PETAL_LKH) {
 							
-							splits.add(new SecondEchelonSplitLKH(distances_satellite_customers.get(i-1),data.getDemands(),data.getQ2()));
+							if(GlobalParameters.SPLIT_TRY_CAPACITIES) {
+								
+								splits.add(new SecondEchelonSplitCapacities(distances_satellite_customers.get(i-1),data.getDemands(),data.getQ2(),data.getLargest_demand()));
+								
+							}else {
+								
+								splits.add(new SecondEchelonSplitLKH(distances_satellite_customers.get(i-1),data.getDemands(),data.getQ2()));
+								
+							}
 							
 						}else {
 							
-							splits.add(new SecondEchelonSplit(distances_satellite_customers.get(i-1),data.getDemands(),data.getQ2()));
+							if(GlobalParameters.SPLIT_TRY_CAPACITIES) {
+								
+								splits.add(new SecondEchelonSplitCapacities(distances_satellite_customers.get(i-1),data.getDemands(),data.getQ2(),data.getLargest_demand()));
+								
+							}else {
+								
+								splits.add(new SecondEchelonSplit(distances_satellite_customers.get(i-1),data.getDemands(),data.getQ2()));
+								
+							}
 							
 						}
 						
@@ -187,10 +210,12 @@ public class Solver {
 			// 5. Calculates the number of iterations:	
 				
 				int num_iterations = (int)GlobalParameters.MSH_NUM_ITERATIONS/(data.getNbSat()*8);
-				if(GlobalParameters.TSP_ALTERNATIVE_STARTING_POINT) {
+				if(GlobalParameters.TSP_CENTROID_STARTING_POINT || GlobalParameters.TSP_DEPOT_STARTING_POINT) {
 					num_iterations = (int)GlobalParameters.MSH_NUM_ITERATIONS/(data.getNbSat()*12);
 				}
-				
+				if(data.getNbCustomers() > 200) {
+					num_iterations = (int)GlobalParameters.MSH_NUM_ITERATIONS/(data.getNbSat()*4);
+				}
 				
 				int num_iterations_fe = (int)GlobalParameters.MSH_NUM_ITERATIONS/(data.getNbSat()*8);
 				if(data.getNbSat() <= 10) {
@@ -530,99 +555,104 @@ public class Solver {
 							
 					}
 					
-					// For each satellite add the sampling functions with a low level of randomization:
-					
-					for(int i = 1; i <= data.getNbSat(); i++) {
+					if(data.getNbCustomers() <= 200) {
 						
-						// Sets the seed for the generation of random numbers:
+						// For each satellite add the sampling functions with a low level of randomization:
 						
-							Random random_nn_2 = new Random(GlobalParameters.SEED+130+1000*i);
-							Random random_ni_2 = new Random(GlobalParameters.SEED+140+1000*i);
-							Random random_fi_2 = new Random(GlobalParameters.SEED+150+1000*i);
-							Random random_bi_2 = new Random(GlobalParameters.SEED+160+1000*i);
+						for(int i = 1; i <= data.getNbSat(); i++) {
 							
-						// Initializes the tsp heuristics:
-						
-								// RNN:
-								
-								NNHeuristic nn_2 = new NNHeuristic(distances_satellite_customers.get(i-1));
-								nn_2.setRandomized(true);
-								nn_2.setRandomGen(random_nn_2);
-								nn_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
-								nn_2.setInitNode(0);
+							// Sets the seed for the generation of random numbers:
 							
-							// RNI:
-	
-								InsertionHeuristic ni_2 = new InsertionHeuristic(distances_satellite_customers.get(i-1),"NEAREST_INSERTION");
-								ni_2.setRandomized(true);
-								ni_2.setRandomGen(random_ni_2);
-								ni_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
-								ni_2.setInitNode(0);	
+								Random random_nn_2 = new Random(GlobalParameters.SEED+130+1000*i);
+								Random random_ni_2 = new Random(GlobalParameters.SEED+140+1000*i);
+								Random random_fi_2 = new Random(GlobalParameters.SEED+150+1000*i);
+								Random random_bi_2 = new Random(GlobalParameters.SEED+160+1000*i);
 								
-							// RNI:
-								
-								InsertionHeuristic fi_2 = new InsertionHeuristic(distances_satellite_customers.get(i-1),"FARTHEST_INSERTION");
-								fi_2.setRandomized(true);
-								fi_2.setRandomGen(random_fi_2);
-								fi_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
-								fi_2.setInitNode(0);
-								
-							// BI:
-								
-								InsertionHeuristic bi_2 = new InsertionHeuristic(distances_satellite_customers.get(i-1),"BEST_INSERTION");
-								bi_2.setRandomized(true);
-								bi_2.setRandomGen(random_bi_2);
-								bi_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
-								bi_2.setInitNode(0);
-								
-						// Set up heuristics:
+							// Initializes the tsp heuristics:
 							
-							OrderFirstSplitSecondHeuristic nn_2h = new OrderFirstSplitSecondHeuristic(nn_2, splits.get(i-1));
-							OrderFirstSplitSecondHeuristic ni_2h = new OrderFirstSplitSecondHeuristic(ni_2, splits.get(i-1));
-							OrderFirstSplitSecondHeuristic fi_2h = new OrderFirstSplitSecondHeuristic(fi_2, splits.get(i-1));
-							OrderFirstSplitSecondHeuristic bi_2h = new OrderFirstSplitSecondHeuristic(bi_2, splits.get(i-1));
-							
-						// Creates sampling functions:
+									// RNN:
+									
+									NNHeuristic nn_2 = new NNHeuristic(distances_satellite_customers.get(i-1));
+									nn_2.setRandomized(true);
+									nn_2.setRandomGen(random_nn_2);
+									nn_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
+									nn_2.setInitNode(0);
 								
-							OrderFirstSplitSecondSampling f_nn_2 = new OrderFirstSplitSecondSampling(nn_2h,num_iterations,("rnn_se_low_"+i));
-							OrderFirstSplitSecondSampling f_ni_2 = new OrderFirstSplitSecondSampling(ni_2h,num_iterations,("rni_se_low_"+i));
-							OrderFirstSplitSecondSampling f_fi_2 = new OrderFirstSplitSecondSampling(fi_2h,num_iterations,("rfi_se_low_"+i));
-							OrderFirstSplitSecondSampling f_bi_2 = new OrderFirstSplitSecondSampling(bi_2h,num_iterations,("rbi_se_low_"+i));
-							
-						// Creates the route pools:
+								// RNI:
+		
+									InsertionHeuristic ni_2 = new InsertionHeuristic(distances_satellite_customers.get(i-1),"NEAREST_INSERTION");
+									ni_2.setRandomized(true);
+									ni_2.setRandomGen(random_ni_2);
+									ni_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
+									ni_2.setInitNode(0);	
+									
+								// RNI:
+									
+									InsertionHeuristic fi_2 = new InsertionHeuristic(distances_satellite_customers.get(i-1),"FARTHEST_INSERTION");
+									fi_2.setRandomized(true);
+									fi_2.setRandomGen(random_fi_2);
+									fi_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
+									fi_2.setInitNode(0);
+									
+								// BI:
+									
+									InsertionHeuristic bi_2 = new InsertionHeuristic(distances_satellite_customers.get(i-1),"BEST_INSERTION");
+									bi_2.setRandomized(true);
+									bi_2.setRandomGen(random_bi_2);
+									bi_2.setRandomizationFactor(GlobalParameters.MSH_RANDOM_FACTOR_LOW);
+									bi_2.setInitNode(0);
+									
+							// Set up heuristics:
 								
-							RoutePool pool_nn_2 = new RoutePool(i);
-							RoutePool pool_ni_2 = new RoutePool(i);
-							RoutePool pool_fi_2 = new RoutePool(i);
-							RoutePool pool_bi_2 = new RoutePool(i);
+								OrderFirstSplitSecondHeuristic nn_2h = new OrderFirstSplitSecondHeuristic(nn_2, splits.get(i-1));
+								OrderFirstSplitSecondHeuristic ni_2h = new OrderFirstSplitSecondHeuristic(ni_2, splits.get(i-1));
+								OrderFirstSplitSecondHeuristic fi_2h = new OrderFirstSplitSecondHeuristic(fi_2, splits.get(i-1));
+								OrderFirstSplitSecondHeuristic bi_2h = new OrderFirstSplitSecondHeuristic(bi_2, splits.get(i-1));
 								
-						// Adds the pools:
+							// Creates sampling functions:
+									
+								OrderFirstSplitSecondSampling f_nn_2 = new OrderFirstSplitSecondSampling(nn_2h,num_iterations,("rnn_se_low_"+i));
+								OrderFirstSplitSecondSampling f_ni_2 = new OrderFirstSplitSecondSampling(ni_2h,num_iterations,("rni_se_low_"+i));
+								OrderFirstSplitSecondSampling f_fi_2 = new OrderFirstSplitSecondSampling(fi_2h,num_iterations,("rfi_se_low_"+i));
+								OrderFirstSplitSecondSampling f_bi_2 = new OrderFirstSplitSecondSampling(bi_2h,num_iterations,("rbi_se_low_"+i));
 								
-							pools.add(pool_nn_2);
-							pools.add(pool_ni_2);
-							pools.add(pool_fi_2);
-							pools.add(pool_bi_2);
-							
-						// Sets the route pools for each heuristic:
+							// Creates the route pools:
+									
+								RoutePool pool_nn_2 = new RoutePool(i);
+								RoutePool pool_ni_2 = new RoutePool(i);
+								RoutePool pool_fi_2 = new RoutePool(i);
+								RoutePool pool_bi_2 = new RoutePool(i);
+									
+							// Adds the pools:
+									
+								pools.add(pool_nn_2);
+								pools.add(pool_ni_2);
+								pools.add(pool_fi_2);
+								pools.add(pool_bi_2);
 								
-							f_nn_2.setRoutePool(pool_nn_2);
-							f_ni_2.setRoutePool(pool_ni_2);
-							f_fi_2.setRoutePool(pool_fi_2);
-							f_bi_2.setRoutePool(pool_bi_2);
-								
-						// Adds the sampling function:
-								
-							msh.addSamplingFunction(f_nn_2);
-							msh.addSamplingFunction(f_ni_2);
-							msh.addSamplingFunction(f_bi_2);
-							msh.addSamplingFunction(f_fi_2);
+							// Sets the route pools for each heuristic:
+									
+								f_nn_2.setRoutePool(pool_nn_2);
+								f_ni_2.setRoutePool(pool_ni_2);
+								f_fi_2.setRoutePool(pool_fi_2);
+								f_bi_2.setRoutePool(pool_bi_2);
+									
+							// Adds the sampling function:
+									
+								msh.addSamplingFunction(f_nn_2);
+								msh.addSamplingFunction(f_ni_2);
+								msh.addSamplingFunction(f_bi_2);
+								msh.addSamplingFunction(f_fi_2);
 
+						}
+						
 					}
+					
 					
 					//Check if we should add the additional sampling functions in which the distance matrix
 					// used by the tsp is not the same that the one used by the split.
 					
-					if(GlobalParameters.TSP_ALTERNATIVE_STARTING_POINT) {
+					if((GlobalParameters.TSP_CENTROID_STARTING_POINT || GlobalParameters.TSP_DEPOT_STARTING_POINT) && data.getNbCustomers() <= 200) {
 						
 						// For each satellite add the sampling functions with a low level of randomization:
 						
@@ -955,7 +985,7 @@ public class Solver {
 					
 						pw.println(counter+" - "+route+" - "+r.getAttribute(RouteAttribute.COST));
 						
-						System.out.println("\t\t Route "+counter_se+": "+route+" - Cost: "+r.getAttribute(RouteAttribute.COST)+" - Load: "+r.getAttribute(RouteAttribute.LOAD));
+						System.out.println("\t\t Route "+counter_se+" created by: "+assembler.solution_se_identifiers.get(counter_se)+" is: "+route+" - Cost: "+r.getAttribute(RouteAttribute.COST)+" - Load: "+r.getAttribute(RouteAttribute.LOAD));
 						
 							
 					// Update the counter:
@@ -1008,8 +1038,6 @@ public class Solver {
 					pw.println("Seed;"+GlobalParameters.SEED);
 					pw.println("AddingAllRoutesInTheSplit;"+GlobalParameters.SPLIT_ADD_ALL);
 					pw.println("UsingLKHToImproveRoutes;"+GlobalParameters.SPLIT_IMPROVE_PETAL_LKH);
-					pw.println("CreatingCopiesOfRoutes;"+GlobalParameters.SPLIT_DUPLICATE_SATELLITE_ROUTES);
-					pw.println("TSPDiversificationStrategy;"+GlobalParameters.TSP_ALTERNATIVE_STARTING_POINT);
 					pw.println("InitializationTime(s);"+cpu_initialization);
 					pw.println("TotalTime(s);"+(cpu_msh_sampling+cpu_msh_assembly));
 					pw.println("TotalDistance;"+assembler.objectiveFunction);
@@ -1033,7 +1061,7 @@ public class Solver {
 					System.out.println("AddingAllRoutesInTheSplit: "+GlobalParameters.SPLIT_ADD_ALL);
 					System.out.println("UsingLKHToImproveRoutes: "+GlobalParameters.SPLIT_IMPROVE_PETAL_LKH);
 					System.out.println("CreatingCopiesOfRoutes: "+GlobalParameters.SPLIT_DUPLICATE_SATELLITE_ROUTES);
-					System.out.println("TSPDiversificationStrategy: "+GlobalParameters.TSP_ALTERNATIVE_STARTING_POINT);
+					System.out.println("TSPDiversificationStrategy: "+(GlobalParameters.TSP_CENTROID_STARTING_POINT || GlobalParameters.TSP_DEPOT_STARTING_POINT));
 					System.out.println("InitializationTime(s): "+cpu_initialization);
 					System.out.println("TotalTime(s): "+(cpu_msh_sampling+cpu_msh_assembly));
 					System.out.println("TotalDistance: "+assembler.objectiveFunction);

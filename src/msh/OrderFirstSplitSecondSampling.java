@@ -37,6 +37,7 @@ public class OrderFirstSplitSecondSampling implements SamplingFunction{
 	public Solution call() throws Exception {
 		if(pool==null)
 			throw new IllegalStateException("The route pool has not been set up");
+		pool.setIdentifier(identifier);
 		//Set up variables
 		VRPSolution s, best=null;
 		int i;

@@ -43,6 +43,12 @@ public final class RoutePool{
 	private int satellite;
 	
 	/**
+	 * Identifier of the associated sampling function
+	 */
+	
+	private String identifier;
+	
+	/**
 	 * Constructs a new {@lnik RoutePool} without any route filtering rule and a default {@link RouteHashCode}. 
 	 * 
 	 * @see {@link PoolFilteringRule} 
@@ -127,6 +133,21 @@ public final class RoutePool{
 	public void setSatellite(int satellite) {
 		this.satellite = satellite;
 	}
+
+	/**
+	 * @return the identifier
+	 */
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	/**
+	 * @param identifier the identifier to set
+	 */
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+	
 	
 	
 }

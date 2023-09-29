@@ -75,12 +75,20 @@ public class DepotToCustomersDistanceMatrix extends ArrayDistanceMatrix{
 					
 					attrs = line.split(";");
 					
-					for(int i = 0; i < attrs.length; i++) {
-						
-						current_coors = attrs[i].split(",");
-						xCoors.add(Double.parseDouble(current_coors[0]));
-						yCoors.add(Double.parseDouble(current_coors[1]));
-						
+					if(path.contains("Set7")) {
+						for(int i = 0; i < attrs.length-2; i++) {
+							
+							current_coors = attrs[i].split(",");
+							xCoors.add(Double.parseDouble(current_coors[0]));
+							yCoors.add(Double.parseDouble(current_coors[1]));
+						}
+					}else {
+						for(int i = 0; i < attrs.length; i++) {
+							
+							current_coors = attrs[i].split(",");
+							xCoors.add(Double.parseDouble(current_coors[0]));
+							yCoors.add(Double.parseDouble(current_coors[1]));
+						}
 					}
 					
 			// 5. Closes the buffered reader:
