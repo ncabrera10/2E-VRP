@@ -1,8 +1,5 @@
-/split/
-/tspReader/
-/util/
 /main/
 /msh/
-/dataStructures/
-/distanceMatrices/
 /model/
+/split/
+/globalParameters/

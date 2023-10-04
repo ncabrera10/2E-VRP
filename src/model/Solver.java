@@ -21,7 +21,8 @@ import distanceMatrices.DepotToCustomersDistanceMatrix;
 import distanceMatrices.DepotToSatellitesDistanceMatrix;
 import distanceMatrices.SatelliteToCustomersDistanceMatrix;
 import globalParameters.GlobalParameters;
-import msh.CPLEXSetPartitioningSolver;
+import msh.AssemblyFunction;
+import msh.GurobiSetPartitioningSolver;
 import msh.MSH;
 import msh.OrderFirstSplitSecondSampling;
 import split.FirstEchelonEnumeration;
@@ -141,7 +142,9 @@ public class Solver {
 					
 			// 4. Creates an assembler:
 				
-				CPLEXSetPartitioningSolver assembler = new CPLEXSetPartitioningSolver(data.getNbCustomers(),data.getNbSat(),true,data);
+				AssemblyFunction assembler = null;
+				assembler = new GurobiSetPartitioningSolver(data.getNbCustomers(),data.getNbSat(),true,data);//GUROBI
+				
 				
 			// 5. Initializes the MSH:
 				
@@ -197,7 +200,7 @@ public class Solver {
 				
 				Split split_fe = null;
 				
-				if(data.getNbSat() <= 10) {
+				if(data.getNbSat() <= 15) {
 				
 					split_fe = new FirstEchelonEnumeration(distances_depot_satellites);
 					
@@ -218,13 +221,13 @@ public class Solver {
 				}
 				
 				int num_iterations_fe = (int)GlobalParameters.MSH_NUM_ITERATIONS/(data.getNbSat()*8);
-				if(data.getNbSat() <= 10) {
+				if(data.getNbSat() <= 15) {
 					num_iterations_fe = 1;
 				}
 				
 			// 6. Set-up of the sampling functions for the first echelon:
 				
-				if(data.getNbSat() <= 10) {
+				if(data.getNbSat() <= 15) {
 					
 					// Sets the seed for the generation of random numbers:
 					
@@ -307,7 +310,8 @@ public class Solver {
 							msh.addSamplingFunction(f_nn_fe_duplicates);
 			
 					}	
-				}else {
+				
+			}else {
 					
 					// Sets the seed for the generation of random numbers:
 					
@@ -454,8 +458,11 @@ public class Solver {
 					msh.addSamplingFunction(f_fi_2_fe);
 			
 					
-				}
+			}
 				
+		// END FIRST ECHELON ! -------
+			
+		// START SECOND ECHELON ! -----------
 				
 			// 7. Set-up of the sampling functions for the second echelon:
 				
@@ -814,7 +821,6 @@ public class Solver {
 								
 							// Step 7: Calculate the decrease in cost:
 								
-								
 								double decrease = distances_satellite_customers.get(pool.getSatellite()-1).getDistance(0,r.get(1)) + distances_satellite_customers.get(pool.getSatellite()-1).getDistance(r.get(r.size()-2),0);
 								
 							// For the other satellites:
@@ -897,7 +903,7 @@ public class Solver {
 	 * @param msh
 	 * @param assembler
 	 */
-	public void printSolution(MSH msh, CPLEXSetPartitioningSolver assembler,DataHandler data) {
+	public void printSolution(MSH msh, AssemblyFunction assembler,DataHandler data) {
 		
 		// 1. Defines the path for the txt file:
 		
@@ -1012,7 +1018,7 @@ public class Solver {
 	 * @param msh
 	 * @param assembler
 	 */
-	public void printSummary(MSH msh, CPLEXSetPartitioningSolver assembler,DataHandler data) {
+	public void printSummary(MSH msh, AssemblyFunction assembler,DataHandler data) {
 	
 		// 1. Defines the path for the txt file:
 		
@@ -1079,6 +1085,7 @@ public class Solver {
 					
 			}catch(Exception e) {
 				System.out.println("Mistake printing the summary");
+				e.printStackTrace();
 			}	
 	}
 }

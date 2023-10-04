@@ -17,13 +17,16 @@ public class MSHEnvironment {
 	/**
 	 * The optimization criterion 
 	 */
+	@SuppressWarnings("unused")
 	private static OptimizationSense criterion=OptimizationSense.MINIMIZATION;
 	/**
 	 * The global timer
 	 */
 	private static StopWatch sampplingTimer=new StopWatch();
+	@SuppressWarnings("unused")
 	private static StopWatch assemblyTimer=new StopWatch();
 	private static Counter samples=new Counter();
+	@SuppressWarnings("unused")
 	private static Solution bound;
 	private static RoutePool pool;
 	private static ArrayList<StoppingCriterion> stoppingCriteria=null;

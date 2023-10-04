@@ -19,6 +19,7 @@ import model.Manager;
  * 	-Modifying the number of iterations for each TSP heuristic..
  * 	Among others..
  * 
+ * Gurobi is used to solve the set partitioning model. (assembly phase)
  * 
  * @author nicolas.cabrera-malik
  *
@@ -37,7 +38,7 @@ public class Main {
 				
 			// Select the instance you want to run, (i.e., the line of the txt file): 1-285
 			
-				int current_instance = 285; 
+				int current_instance = 1; 
 				
 			// Configuration file name:
 				

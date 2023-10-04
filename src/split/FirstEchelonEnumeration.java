@@ -63,35 +63,38 @@ public class FirstEchelonEnumeration implements Split{
 		
 		for(ArrayList<Integer> currentList : listComplete) {
 			
-			currentList.add(0);
-			
-			LKH lkh = new LKH(distances,currentList);
+			if(currentList.size() <= 10) {
+				currentList.add(0);
+				
+				LKH lkh = new LKH(distances,currentList);
 
-			if(currentList.size()>2) {
-				lkh.runAlgorithm();
+				if(currentList.size()>2) {
+					lkh.runAlgorithm();
+				}
+				
+				double newCost = lkh.getDistance();
+				
+				//Initialize a new route
+				Route r=JVRAEnv.getRouteFactory().buildRoute();
+				r.add(tsp.get(0));
+				double load=0;
+				int satellite_pos = lkh.getIndex(tsp.get(0));
+				for(int i=satellite_pos+1; i<lkh.tour.length;i++){ //Build the route
+					int node = lkh.tour[i];
+					r.add(node);
+				}
+				for(int i=0; i<satellite_pos;i++){ //Build the route
+					int node = lkh.tour[i];
+					r.add(node);
+				}
+				r.add(tsp.get(0));
+				double cost=newCost;
+				r.setAttribute(RouteAttribute.COST,cost);
+				of+=cost;
+				r.setAttribute(RouteAttribute.LOAD, load);
+				s.addRoute(r);
 			}
 			
-			double newCost = lkh.getDistance();
-			
-			//Initialize a new route
-			Route r=JVRAEnv.getRouteFactory().buildRoute();
-			r.add(tsp.get(0));
-			double load=0;
-			int satellite_pos = lkh.getIndex(tsp.get(0));
-			for(int i=satellite_pos+1; i<lkh.tour.length;i++){ //Build the route
-				int node = lkh.tour[i];
-				r.add(node);
-			}
-			for(int i=0; i<satellite_pos;i++){ //Build the route
-				int node = lkh.tour[i];
-				r.add(node);
-			}
-			r.add(tsp.get(0));
-			double cost=newCost;
-			r.setAttribute(RouteAttribute.COST,cost);
-			of+=cost;
-			r.setAttribute(RouteAttribute.LOAD, load);
-			s.addRoute(r);
 		}
 		
 		s.setOF(of);

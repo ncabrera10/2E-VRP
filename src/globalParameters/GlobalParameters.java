@@ -52,7 +52,7 @@ public class GlobalParameters {
 		/**
 		 * Should CPLEX focus just on finding the best solution it can?
 		 */
-		public static final boolean CPLEX_EMPHASIZE_FEASIBILITY = GlobalParametersReader.<String>get("CPLEX_EMPHASIZE_FEASIBILITY", String.class).equals("false") ? false:true;
+		public static final boolean GUROBI_EMPHASIZE_FEASIBILITY = GlobalParametersReader.<String>get("GUROBI_EMPHASIZE_FEASIBILITY", String.class).equals("false") ? false:true;
 		
 		/**
 		 * Should we add diversity, by solving the TSP with a different matrix than the one used in the split?

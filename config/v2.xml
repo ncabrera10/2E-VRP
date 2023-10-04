@@ -9,14 +9,14 @@
 
 <entry key="PRECISION">4</entry> 
 <entry key="SEED">1</entry> 
-<entry key="THREADS">10</entry> 
+<entry key="THREADS">8</entry>
 
 <entry key="SPLIT_DUPLICATE_SATELLITE_ROUTES">false</entry>
 <entry key="TSP_DEPOT_STARTING_POINT">false</entry>
 <entry key="TSP_CENTROID_STARTING_POINT">true</entry>
 <entry key="SPLIT_IMPROVE_PETAL_LKH">true</entry>
 <entry key="SPLIT_ADD_ALL">false</entry> 
-<entry key="CPLEX_EMPHASIZE_FEASIBILITY">false</entry>
+<entry key="GUROBI_EMPHASIZE_FEASIBILITY">false</entry>
 <entry key="SPLIT_TRY_CAPACITIES">false</entry> 
 
 <entry key="MSH_MAX_POOL_SIZE">20000</entry> 
