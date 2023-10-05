@@ -21,6 +21,9 @@ import model.Manager;
  * 
  * Gurobi is used to solve the set partitioning model. (assembly phase)
  * 
+ * if you want to use cplex don't forget to include a line like this in the run configurations: -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx
+ * and to uncomment line 151 in the src/msh/solver.java class
+ * 
  * @author nicolas.cabrera-malik
  *
  */

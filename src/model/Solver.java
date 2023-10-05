@@ -22,6 +22,7 @@ import distanceMatrices.DepotToSatellitesDistanceMatrix;
 import distanceMatrices.SatelliteToCustomersDistanceMatrix;
 import globalParameters.GlobalParameters;
 import msh.AssemblyFunction;
+import msh.CPLEXSetPartitioningSolver;
 import msh.GurobiSetPartitioningSolver;
 import msh.MSH;
 import msh.OrderFirstSplitSecondSampling;
@@ -143,7 +144,11 @@ public class Solver {
 			// 4. Creates an assembler:
 				
 				AssemblyFunction assembler = null;
-				assembler = new GurobiSetPartitioningSolver(data.getNbCustomers(),data.getNbSat(),true,data);//GUROBI
+				//assembler = new GurobiSetPartitioningSolver(data.getNbCustomers(),data.getNbSat(),true,data);//GUROBI
+				
+				// If you want to use cplex use this line instead:
+				
+				assembler = new CPLEXSetPartitioningSolver(data.getNbCustomers(),data.getNbSat(),true,data);//GUROBI
 				
 				
 			// 5. Initializes the MSH:
@@ -267,7 +272,7 @@ public class Solver {
 						
 						msh.addSamplingFunction(f_nn_fe);
 						
-					for(int i = 1 ; i < data.getFleet1(); i++) {
+					for(int i = 1 ; i < data.getNumber_of_copies(); i++) {
 					
 						 Split split_fe_duplicates = new FirstEchelonEnumerationSingle(distances_depot_satellites);
 						

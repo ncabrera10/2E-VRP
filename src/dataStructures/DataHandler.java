@@ -76,6 +76,11 @@ public class DataHandler {
 	 */
 	private ArrayList<Double> handling_costs;
 	
+	/**
+	 * Number of copies for single satellite FE routes
+	 */
+	
+	private int number_of_copies;
 	
 	// METHODS:
 	
@@ -163,6 +168,7 @@ public class DataHandler {
 					
 					demands = new ArrayList<Double>();
 					largest_demand = 0;
+					double total_demand = 0;
 					for(int i = 0; i < nbCustomers; i++) {
 						
 						String[] current_coors = attrs[i].split(",");
@@ -170,7 +176,9 @@ public class DataHandler {
 						if(demands.get(demands.size()-1) > largest_demand) {
 							largest_demand = demands.get(demands.size()-1);
 						}
+						total_demand += demands.get(demands.size()-1);
 					}
+					setNumber_of_copies((int) Math.ceil(total_demand / Q1));
 					
 					
 			// 5. Closes the buffered reader:
@@ -348,6 +356,14 @@ public class DataHandler {
 	 */
 	public void setLargest_demand(double largest_demand) {
 		this.largest_demand = largest_demand;
+	}
+
+	public int getNumber_of_copies() {
+		return number_of_copies;
+	}
+
+	public void setNumber_of_copies(int number_of_copies) {
+		this.number_of_copies = number_of_copies;
 	}
 	
 	
