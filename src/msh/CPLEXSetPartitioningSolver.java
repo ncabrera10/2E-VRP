@@ -210,7 +210,7 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 								
 								satFlow_constraints[route.get(i)-1].addTerm(1,f[route.get(i) + (counter_fe * nSatellites) - 1]);
 								
-								of.addTerm(data.getHandling_costs().get(route.get(i)-1), f[route.get(i) + (counter_fe * nSatellites) - 1]);
+								of.addTerm(data.getHandling_costs().get(route.get(i)), f[route.get(i) + (counter_fe * nSatellites) - 1]);
 								
 							}
 						
