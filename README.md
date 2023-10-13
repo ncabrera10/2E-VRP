@@ -21,6 +21,8 @@ The configuration file is an xml file that should be saved in the "config" folde
  
 We include a sample configuration file (default.xml).
 
+To visualize all our solutions or new ones you can use this website: https://nicolascabrera.shinyapps.io/2EVRP/
+
 ===========================================================================================================================================================================
 Default instance
 ===========================================================================================================================================================================
@@ -33,7 +35,9 @@ References
 ===========================================================================================================================================================================
 
 -Mendoza, J. E., & Villegas, J. G. (2013). A multi-space sampling heuristic for the vehicle routing problem with stochastic demands. Optimization Letters, 7, 1503-1516.
+
 -Cabrera, N., Cordeau, J. F., & Mendoza, J. E. (2022). The doubly open park-and-loop routing problem. Computers & Operations Research, 143, 105761.
+
 -Breunig, U., Schmid, V., Hartl, R. F., & Vidal, T. (2016). A large neighbourhood based heuristic for two-echelon routing problems. Computers & Operations Research, 76, 208-225.
 
 ===========================================================================================================================================================================
