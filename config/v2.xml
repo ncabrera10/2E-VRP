@@ -24,6 +24,6 @@
 <entry key="MSH_SAMPLING_TIME_LIMIT">120</entry>
 <entry key="MSH_RANDOM_FACTOR_HIGH">12</entry>
 <entry key="MSH_RANDOM_FACTOR_LOW">3</entry>
-<entry key="MSH_ASSEMBLY_TIME_LIMIT">120</entry>
+<entry key="MSH_ASSEMBLY_TIME_LIMIT">300</entry>
 
 </properties>

@@ -17,14 +17,14 @@ done
 
 ### v2
 
-for i in {55..55}; do
+for i in {208..234}; do
 	for j in {1..5}; do
-   		java -Xmx14000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP_cplex.jar "ExperimentsAllSets.txt" $i "v2.xml" $j 8
+   		java -Xmx20000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP_cplex.jar "ExperimentsAllSets.txt" $i "v2.xml" $j 8
 	done
 done
 
 
-for i in {235..285}; do
+for i in {270..285}; do
 	for j in {1..5}; do
    		java -Xmx20000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP_cplex.jar "ExperimentsAllSets.txt" $i "v2.xml" $j 8
 	done
