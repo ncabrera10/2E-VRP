@@ -50,9 +50,27 @@ public class GlobalParameters {
 	// MSH  parameters:
 		
 		/**
-		 * Should CPLEX focus just on finding the best solution it can?
+		 * Should the assembly phase prioritize feasibility?
 		 */
-		public static final boolean GUROBI_EMPHASIZE_FEASIBILITY = GlobalParametersReader.<String>get("GUROBI_EMPHASIZE_FEASIBILITY", String.class).equals("false") ? false:true;
+		public static final boolean EMPHASIZE_FEASIBILITY = GlobalParametersReader.<String>get("EMPHASIZE_FEASIBILITY", String.class).equals("false") ? false:true;
+		
+		
+		/**
+		 * Use basic TSP heuristics with low level of randomization?
+		 */
+		public static final boolean USE_TSP_HEURISTICS_LOW = GlobalParametersReader.<String>get("USE_TSP_HEURISTICS_LOW", String.class).equals("false") ? false:true;
+		
+		
+		/**
+		 * Use basic TSP heuristics with high level of randomization?
+		 */
+		public static final boolean USE_TSP_HEURISTICS_HIGH = GlobalParametersReader.<String>get("USE_TSP_HEURISTICS_HIGH", String.class).equals("false") ? false:true;
+		
+		/**
+		 * Use a TSP heuristic that considers the capacity?
+		 */
+		public static final boolean USE_TSP_WITH_CAPACITY = GlobalParametersReader.<String>get("USE_TSP_WITH_CAPACITY", String.class).equals("false") ? false:true;
+		
 		
 		/**
 		 * Should we add diversity, by solving the TSP with a different matrix than the one used in the split?
@@ -82,6 +100,14 @@ public class GlobalParameters {
 		public static final boolean SPLIT_TRY_CAPACITIES = GlobalParametersReader.<String>get("SPLIT_TRY_CAPACITIES", String.class).equals("false") ? false:true;
 		
 		/**
+		 * Should we include a different type of sampling heuristic?
+		 */
+		public static final boolean USE_CLUSTER_FIRST_HEURISTIC = GlobalParametersReader.<String>get("USE_CLUSTER_FIRST_HEURISTIC", String.class).equals("false") ? false:true;
+		
+		
+		
+		
+		/**
 		 * Maximum number of routes allowed in each pool
 		 */
 		public static final int MSH_MAX_POOL_SIZE = GlobalParametersReader.<Integer>get("MSH_MAX_POOL_SIZE", Integer.class);
@@ -100,6 +126,11 @@ public class GlobalParameters {
 		 * Randomization factor (large value) for the tsp heuristics
 		 */
 		public static final int MSH_RANDOM_FACTOR_HIGH = GlobalParametersReader.<Integer>get("MSH_RANDOM_FACTOR_HIGH", Integer.class);
+		
+		/**
+		 * Randomization factor (large value) for the tsp heuristics
+		 */
+		public static final int MSH_RANDOM_FACTOR_HIGH_RN = GlobalParametersReader.<Integer>get("MSH_RANDOM_FACTOR_HIGH_RN", Integer.class);
 		
 		/**
 		 * Randomization factor (small value) for the tsp heuristics

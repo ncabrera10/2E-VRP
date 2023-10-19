@@ -1,6 +1,5 @@
-/main/
-/msh/
-/model/
-/split/
 /globalParameters/
-/dataStructures/
+/msh/
+/main/
+/model/
+/experiments/

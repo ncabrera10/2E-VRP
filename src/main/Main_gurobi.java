@@ -3,8 +3,6 @@ package main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
-import globalParameters.GlobalParameters;
 import globalParameters.GlobalParametersReader;
 import model.Manager;
 
@@ -21,11 +19,12 @@ import model.Manager;
  * 	-Modifying the number of iterations for each TSP heuristic..
  * 	Among others..
  * 
+ * Gurobi is used to solve the set partitioning model. (assembly phase)
  * 
  * @author nicolas.cabrera-malik
  *
  */
-public class Main_local {
+public class Main_gurobi {
 
 	public static void main(String[] args) {
 		
@@ -35,23 +34,15 @@ public class Main_local {
 			
 				//Options: ExperimentsAllSets.txt
 	
-				String fileName = args[0]; 
+				String fileName = "ExperimentsAllSets.txt"; 
 				
 			// Select the instance you want to run, (i.e., the line of the txt file): 1-285
 			
-				int current_instance = Integer.parseInt(args[1]); 
+				int current_instance = 1; 
 				
 			// Configuration file name:
 				
-				String config_file = args[2];
-				
-			// Select a seed for the random number generator:
-				
-				int seed = Integer.parseInt(args[3]); //Current replicate
-			
-			//Number of threads for cplex and the MSH
-			
-				int threads = Integer.parseInt(args[4]); //Number of threads for cplex and the MSH
+				String config_file = "default.xml";
 			
 		// ------------------------------------------------------------------	
 			
@@ -89,7 +80,6 @@ public class Main_local {
 				// Loads the global parameters: some paths, the precision..
 				
 					GlobalParametersReader.initialize("./config/"+config_file);
-					setUpConfiguration(seed,threads);
 					
 				// Creates a Manager:
 					
@@ -97,7 +87,7 @@ public class Main_local {
 					
 				// Runs the MSH:
 					
-					manager.runMSH(instance_identifier);
+					manager.runMSH_gurobi(instance_identifier);
 					
 				// Closes the code:
 					
@@ -110,17 +100,5 @@ public class Main_local {
 			} 
 	
 	}	
-	
-	/**
-	 * This method sets the main parameters of the run: Seed and threads
-	 * @param seed
-	 * @param threads
-	 */
-	public static void setUpConfiguration(int seed, int threads) {
-		
-		GlobalParameters.SEED = seed;
-		GlobalParameters.THREADS = threads;
-		
-	}
 	
 }

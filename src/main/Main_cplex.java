@@ -19,15 +19,12 @@ import model.Manager;
  * 	-Modifying the number of iterations for each TSP heuristic..
  * 	Among others..
  * 
- * Gurobi/CPLEX is used to solve the set partitioning model. (assembly phase)
- * 
- * if you want to use cplex don't forget to include a line like this in the run configurations: -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx
- * and to uncomment line 151 in the src/msh/solver.java class
+ * CPLEX is used to solve the set partitioning model. (assembly phase)
  * 
  * @author nicolas.cabrera-malik
  *
  */
-public class Main {
+public class Main_cplex {
 
 	public static void main(String[] args) {
 		
@@ -90,7 +87,7 @@ public class Main {
 					
 				// Runs the MSH:
 					
-					manager.runMSH(instance_identifier);
+					manager.runMSH_cplex(instance_identifier);
 					
 				// Closes the code:
 					
@@ -99,6 +96,10 @@ public class Main {
 			}catch(Exception e) {
 				
 				System.out.println("A problem running the code");
+				System.out.println("Suggestions:");
+				System.out.println("1. Do you have a valid Cplex license?");
+				System.out.println("2. Do you have a folder in the results folder with the name of the config file?");
+				System.out.println("3. If the instance is large, can you increase the memory / turn-off some sampling functions?");
 				e.printStackTrace();
 			} 
 	

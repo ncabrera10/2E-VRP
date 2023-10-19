@@ -382,7 +382,7 @@ public class GurobiSetPartitioningSolver extends AssemblyFunction{
 				 System.out.println("About to start solving the set partitioning model...");
 			 }
 			 
-			 if(GlobalParameters.GUROBI_EMPHASIZE_FEASIBILITY) {
+			 if(GlobalParameters.EMPHASIZE_FEASIBILITY) {
 				 model.set(GRB.IntParam.MIPFocus,1);
 			 }
 			 

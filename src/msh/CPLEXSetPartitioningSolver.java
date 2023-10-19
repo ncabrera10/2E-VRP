@@ -43,7 +43,6 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 	@Override
 	public Solution assembleSolution(Solution bound, ArrayList<RoutePool> pools) {
 		
-		
 		// PROCEDURE TO REMOVE DUPLICATES:
 		
 		// Create a pool for satellite:
@@ -309,7 +308,7 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 				 System.out.println("About to start solving the set partitioning model...");
 			 }
 			 
-			 if(GlobalParameters.GUROBI_EMPHASIZE_FEASIBILITY) {
+			 if(GlobalParameters.EMPHASIZE_FEASIBILITY) {
 				 cplex.setParam(IloCplex.Param.Emphasis.MIP, 1);
 			 }
 			 
