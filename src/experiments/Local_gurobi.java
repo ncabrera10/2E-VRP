@@ -25,7 +25,7 @@ import model.Manager;
  * @author nicolas.cabrera-malik
  *
  */
-public class Main_local {
+public class Local_gurobi {
 
 	public static void main(String[] args) {
 		
@@ -97,7 +97,7 @@ public class Main_local {
 					
 				// Runs the MSH:
 					
-					manager.runMSH_cplex(instance_identifier);
+					manager.runMSH_gurobi(instance_identifier);
 					
 				// Closes the code:
 					
