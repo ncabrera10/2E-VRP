@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <entry key="INSTANCE_FOLDER">./instances/</entry>
-<entry key="RESULT_FOLDER">./results/small/</entry> 
+<entry key="RESULT_FOLDER">./results/v1/</entry> 
 
 <entry key="PRINT_IN_CONSOLE">false</entry>
 <entry key="PRINT_POOLS_TO_FILE">false</entry>
@@ -13,11 +13,11 @@
 
 
 <entry key="USE_TSP_HEURISTICS_LOW">true</entry>
-<entry key="USE_TSP_HEURISTICS_HIGH">true</entry>
+<entry key="USE_TSP_HEURISTICS_HIGH">false</entry>
 <entry key="USE_CLUSTER_FIRST_HEURISTIC">false</entry>
 <entry key="USE_TSP_WITH_CAPACITY">false</entry>
 <entry key="TSP_DEPOT_STARTING_POINT">false</entry>
-<entry key="TSP_CENTROID_STARTING_POINT">true</entry>
+<entry key="TSP_CENTROID_STARTING_POINT">false</entry>
 
 <entry key="SPLIT_IMPROVE_PETAL_LKH">true</entry>
 <entry key="SPLIT_ADD_ALL">false</entry> 

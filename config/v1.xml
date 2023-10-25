@@ -26,6 +26,7 @@
 
 <entry key="EMPHASIZE_FEASIBILITY">true</entry>
 <entry key="USE_IMPROVEMENT_MIP">true</entry>
+<entry key="IMPROVEMENT_MIP_MAX_ITERATIONS">1</entry>
 <entry key="MAX_PERCENTAGE_SIMILARITY">0.8</entry>
 <entry key="MAX_TO_ADD_SIMILARITY">50</entry>
 

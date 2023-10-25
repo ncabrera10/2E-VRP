@@ -50,6 +50,11 @@ public class GlobalParameters {
 	// MSH  parameters:
 		
 		/**
+		 * Maximum number of times the improvement mip may be used
+		 */
+		public static final int IMPROVEMENT_MIP_MAX_ITERATIONS = GlobalParametersReader.<Integer>get("IMPROVEMENT_MIP_MAX_ITERATIONS", Integer.class);
+		
+		/**
 		 * Should we use an improvement MIP as a part of the assembly phase:
 		 */
 		public static final int MAX_TO_ADD_SIMILARITY = GlobalParametersReader.<Integer>get("MAX_TO_ADD_SIMILARITY", Integer.class);
