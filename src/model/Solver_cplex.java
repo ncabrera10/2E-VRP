@@ -19,6 +19,7 @@ import core.RoutePool;
 import core.Split;
 import dataStructures.DataHandler;
 import distanceMatrices.CenterToCustomersDistanceMatrix;
+import distanceMatrices.CustomersDistanceMatrix;
 import distanceMatrices.DepotToCustomersDistanceMatrix;
 import distanceMatrices.DepotToSatellitesDistanceMatrix;
 import distanceMatrices.PhantomToCustomersDistanceMatrix;
@@ -126,6 +127,10 @@ public class Solver_cplex {
 						
 						}
 				
+				// Customers distance matrix
+						
+					ArrayDistanceMatrix distances_customers = new CustomersDistanceMatrix(GlobalParameters.INSTANCE_FOLDER+instance_identifier);
+						
 			// 3. Initializes an array to store all the route pools. We will have one pool for each satellite/tspHeuristic
 						
 				ArrayList<RoutePool> pools = new ArrayList<RoutePool>();			
@@ -375,12 +380,12 @@ public class Solver_cplex {
 			
 			// Runs the assembly step:
 			
-			msh.run_assembly();
+			msh.run_assembly(distances_customers,distances_satellite_customers);
 			
 			if(GlobalParameters.PRINT_IN_CONSOLE) {
 				System.out.println("End of the assembly step...");
 			}
-			
+		
 			// Stops the clock:
 			
 			FinTime_msh = (double) System.nanoTime();

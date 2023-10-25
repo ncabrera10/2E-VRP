@@ -12,5 +12,9 @@
 	<classpathentry kind="lib" path="lib/mockito-all-1.10.19.jar"/>
 	<classpathentry kind="lib" path="lib/junit5-0.6.9.jar"/>
 	<classpathentry kind="lib" path="lib/jdom-2.0.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-jdk14-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-2.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/javacpp-1.5.9.jar"/>
+	<classpathentry kind="lib" path="lib/openblas-0.3.6-1.5.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

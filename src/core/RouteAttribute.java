@@ -21,5 +21,9 @@ public enum RouteAttribute{
 	DRIVER_ID,
 
 	N_CUSTOMERS,
+	
+	SIMILARITY,
+	
+	SATELLITE,
 
 }

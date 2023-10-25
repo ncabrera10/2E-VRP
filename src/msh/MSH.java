@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import core.Algorithm;
+import core.ArrayDistanceMatrix;
 import core.JVRAEnv;
 import core.OptimizationSense;
 import core.RoutePool;
@@ -120,7 +121,7 @@ public class MSH implements Algorithm{
 		
 		//Assemble the final solution	
 		
-		return assemblyFunction.assembleSolution(bound,pools);
+		return assemblyFunction.assembleSolution(bound,pools,null,null);
 	}
 	
 	/**
@@ -169,12 +170,14 @@ public class MSH implements Algorithm{
 	 * This method runs the assembly phase. It calls the CPLEX set partitioning solver.
 	 * @return
 	 */
-	public Solution run_assembly() {
+	public Solution run_assembly(ArrayDistanceMatrix distances_customers,ArrayList<ArrayDistanceMatrix> distances_satellite_customers) {
 
 		//Assemble the final solution	
 		
-		return assemblyFunction.assembleSolution(bound,pools);
+		return assemblyFunction.assembleSolution(bound,pools,distances_customers,distances_satellite_customers);
+	
 	}
+
 	
 	/**
 	 * This method returns the current size of the pool, summing the size of the individual pools.

@@ -50,6 +50,23 @@ public class GlobalParameters {
 	// MSH  parameters:
 		
 		/**
+		 * Should we use an improvement MIP as a part of the assembly phase:
+		 */
+		public static final int MAX_TO_ADD_SIMILARITY = GlobalParametersReader.<Integer>get("MAX_TO_ADD_SIMILARITY", Integer.class);
+		
+		/**
+		 * Should we use an improvement MIP as a part of the assembly phase:
+		 */
+		public static final double MAX_PERCENTAGE_SIMILARITY = GlobalParametersReader.<Double>get("MAX_PERCENTAGE_SIMILARITY", Double.class);
+		
+		
+		/**
+		 * Should we use an improvement MIP as a part of the assembly phase:
+		 */
+		public static final boolean USE_IMPROVEMENT_MIP = GlobalParametersReader.<String>get("USE_IMPROVEMENT_MIP", String.class).equals("false") ? false:true;
+		
+		
+		/**
 		 * Should the assembly phase prioritize feasibility?
 		 */
 		public static final boolean EMPHASIZE_FEASIBILITY = GlobalParametersReader.<String>get("EMPHASIZE_FEASIBILITY", String.class).equals("false") ? false:true;

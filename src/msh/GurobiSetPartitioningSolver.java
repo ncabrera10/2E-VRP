@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import core.ArrayDistanceMatrix;
 import core.Route;
 import core.RouteAttribute;
 import core.RoutePool;
@@ -42,7 +43,7 @@ public class GurobiSetPartitioningSolver extends AssemblyFunction{
 		this.data=data;
 	}
 
-	public Solution assembleSolution(Solution bound, ArrayList<RoutePool> pools) {
+	public Solution assembleSolution(Solution bound, ArrayList<RoutePool> pools, ArrayDistanceMatrix distances_customers, ArrayList<ArrayDistanceMatrix> distances_satellite_customers) {
 		
 		// PROCEDURE TO REMOVE DUPLICATES:
 		
@@ -471,5 +472,6 @@ public class GurobiSetPartitioningSolver extends AssemblyFunction{
 		
 		return null;
 	}
+
 	
 }

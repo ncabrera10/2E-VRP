@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <entry key="INSTANCE_FOLDER">./instances/</entry>
-<entry key="RESULT_FOLDER">./results/test/</entry> 
+<entry key="RESULT_FOLDER">./results/large/</entry> 
 
 <entry key="PRINT_IN_CONSOLE">false</entry>
 <entry key="PRINT_POOLS_TO_FILE">false</entry>
@@ -13,7 +13,7 @@
 
 
 <entry key="USE_TSP_HEURISTICS_LOW">true</entry>
-<entry key="USE_TSP_HEURISTICS_HIGH">false</entry>
+<entry key="USE_TSP_HEURISTICS_HIGH">true</entry>
 <entry key="USE_CLUSTER_FIRST_HEURISTIC">false</entry>
 <entry key="USE_TSP_WITH_CAPACITY">false</entry>
 <entry key="TSP_DEPOT_STARTING_POINT">false</entry>
@@ -25,13 +25,16 @@
 <entry key="SPLIT_TRY_CAPACITIES">false</entry> 
 
 <entry key="EMPHASIZE_FEASIBILITY">true</entry>
+<entry key="USE_IMPROVEMENT_MIP">true</entry>
+<entry key="MAX_PERCENTAGE_SIMILARITY">0.8</entry>
+<entry key="MAX_TO_ADD_SIMILARITY">50</entry>
 
 <entry key="MSH_MAX_POOL_SIZE">20000</entry> 
 <entry key="MSH_NUM_ITERATIONS">5000</entry>
-<entry key="MSH_SAMPLING_TIME_LIMIT">120</entry>
+<entry key="MSH_SAMPLING_TIME_LIMIT">300</entry>
 <entry key="MSH_RANDOM_FACTOR_HIGH">12</entry>
 <entry key="MSH_RANDOM_FACTOR_HIGH_RN">5</entry>
 <entry key="MSH_RANDOM_FACTOR_LOW">3</entry>
-<entry key="MSH_ASSEMBLY_TIME_LIMIT">300</entry>
+<entry key="MSH_ASSEMBLY_TIME_LIMIT">120</entry>
 
 </properties>

@@ -19,6 +19,7 @@ import core.RoutePool;
 import core.Split;
 import dataStructures.DataHandler;
 import distanceMatrices.CenterToCustomersDistanceMatrix;
+import distanceMatrices.CustomersDistanceMatrix;
 import distanceMatrices.DepotToCustomersDistanceMatrix;
 import distanceMatrices.DepotToSatellitesDistanceMatrix;
 import distanceMatrices.PhantomToCustomersDistanceMatrix;
@@ -291,6 +292,11 @@ public class Solver_gurobi {
 					
 				}
 				
+				// Customers distance matrix
+				
+				ArrayDistanceMatrix distances_customers = new CustomersDistanceMatrix(GlobalParameters.INSTANCE_FOLDER+instance_identifier);
+				
+				
 			// Cluster-first route second sampling:
 					
 				if(GlobalParameters.USE_CLUSTER_FIRST_HEURISTIC) {
@@ -374,7 +380,7 @@ public class Solver_gurobi {
 			
 			// Runs the assembly step:
 			
-			msh.run_assembly();
+			msh.run_assembly(distances_customers,distances_satellite_customers);
 			
 			if(GlobalParameters.PRINT_IN_CONSOLE) {
 				System.out.println("End of the assembly step...");
