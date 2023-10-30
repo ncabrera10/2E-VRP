@@ -332,6 +332,7 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 			 // Objective function value:
 			 
 			 objectiveFunction = cplex.getObjValue();
+			 this.objectiveFunctionPreMIP = cplex.getObjValue();
 			 
 			 // Routes and loads:
 			 
@@ -1108,7 +1109,7 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 		
 			//Hide the output:
 			 
-				model.setParam(IloCplex.Param.TimeLimit,GlobalParameters.MSH_ASSEMBLY_TIME_LIMIT);
+				model.setParam(IloCplex.Param.TimeLimit,GlobalParameters.MIP_IMPROVEMENT_TIME_LIMIT);
 				model.setParam(IloCplex.Param.Threads, GlobalParameters.THREADS);
 			 
 				 if(GlobalParameters.PRINT_IN_CONSOLE) {
@@ -1172,7 +1173,7 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 						
 						// If the route was selected:
 						
-							if(model.getValue(x_r.get(counter)) > 0) {
+							if(model.getValue(x_r.get(counter)) > 0.5) {
 								
 								this.solution_fe.add(r);
 								if(hasTerminals){
@@ -1211,8 +1212,8 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 						
 						// If the route was selected:
 						
-						if(model.getValue(y_r.get(counter)) > 0) {
-							
+						if(model.getValue(y_r.get(counter)) > 0.5) {
+
 							// Create a copy of the route:
 							
 								Route r_updated = r.getCopy();
@@ -1229,7 +1230,7 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 									
 										// If the cluster was inserted:
 										
-											if(model.getValue(z_rc.get(counter+" - "+cluster_id)) > 0) {
+											if(model.getValue(z_rc.get(counter+" - "+cluster_id)) > 0.5) {
 												
 												// Retrieve the best insertion position and the insertion cost:
 												
@@ -1263,20 +1264,23 @@ public class CPLEXSetPartitioningSolver extends AssemblyFunction{
 									if(j < r.size() - 2) {
 										
 										for(int p = 1; p + j < r.size(); p++) { //Iterate over the feasible positions in which j customers can be removed 
-											if(model.getValue(w_rpt.get(counter+" - "+p+" - "+j)) > 0) {
-												
-												int node_in_remove_pos = r.get(p);
-												int position_to_start_rem = r_updated.positionOf(node_in_remove_pos);
+											if(model.getValue(w_rpt.get(counter+" - "+p+" - "+j)) > 0.5) {
 												
 												for(int jj = 0; jj < j; jj++) {
-													int node_in_remove_pos_act = r_updated.get(position_to_start_rem);
-													if(node_in_remove_pos_act != -1) {
-														double demand = data.getDemands().get(node_in_remove_pos_act-1);
-														r_updated.remove(position_to_start_rem);
-														double currentLoad = (double) r_updated.getAttribute(RouteAttribute.LOAD);
-														r_updated.setAttribute(RouteAttribute.LOAD, currentLoad - demand);
+													int node_in_remove_pos = r.get(p+jj);
+													int position_to_start_rem = r_updated.positionOf(node_in_remove_pos);
+													if( position_to_start_rem != -1) {
+														int node_in_remove_pos_act = r_updated.get(position_to_start_rem);
+														//System.out.println(counter+" - "+p+" - "+j+" - "+jj+" - "+r+" - "+r_updated+" - "+position_to_start_rem+" - "+node_in_remove_pos_act);									
+															double demand = data.getDemands().get(node_in_remove_pos_act-1);
+															r_updated.remove(position_to_start_rem);
+															double currentLoad = (double) r_updated.getAttribute(RouteAttribute.LOAD);
+															r_updated.setAttribute(RouteAttribute.LOAD, currentLoad - demand);
+														
+		
 													}
-	
+													
+													
 												}
 						
 												double currentCost = (double) r_updated.getAttribute(RouteAttribute.COST);

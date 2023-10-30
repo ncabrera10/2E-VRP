@@ -13,6 +13,8 @@ public abstract class AssemblyFunction {
 	protected abstract Solution assembleSolution(Solution bound, ArrayList<RoutePool> pools, ArrayDistanceMatrix distances_customers, ArrayList<ArrayDistanceMatrix> distances_satellite_customers);
 	
 	public double objectiveFunction;
+	public double objectiveFunctionPreMIP;
+	
 	public ArrayList<Route> solution_fe;
 	public ArrayList<Route> solution_se;
 	public ArrayList<ArrayList<Double>> solution_fe_drops;

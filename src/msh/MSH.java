@@ -102,7 +102,8 @@ public class MSH implements Algorithm{
 		for(SamplingFunction sampling : samplingFunctions) {
 			numberOfIterations += sampling.getNuberOfDrawnSamples();
 		}
-				
+		
+		/**
 		for(Future<Solution> f:bounds){
 			if(f!=null){
 				try {
@@ -118,7 +119,8 @@ public class MSH implements Algorithm{
 				}
 			}
 		}
-		
+		*/
+
 		//Assemble the final solution	
 		
 		return assemblyFunction.assembleSolution(bound,pools,null,null);
@@ -146,8 +148,7 @@ public class MSH implements Algorithm{
 			numberOfIterations += sampling.getNuberOfDrawnSamples();
 		}
 		
-		//Get the best bound
-
+		/**
 		for(Future<Solution> f:bounds){
 			if(f!=null){
 				try {
@@ -163,6 +164,7 @@ public class MSH implements Algorithm{
 				}
 			}
 		}
+		*/
 
 	}
 

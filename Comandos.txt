@@ -8,8 +8,7 @@ cd /Users/nicolas.cabrera-malik/Documents/Work/Thesis/2EVRP/Code/2E-VRP/2E-VRP/
 
 ### v1
 
-
-for i in {3..261}; do
+for i in {119..261}; do
 	for j in {1..5}; do
    		java -Xmx20000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP_cplex.jar "ExperimentsAllSets.txt" $i "v1.xml" $j 8
 	done
@@ -20,3 +19,8 @@ for i in {262..285}; do
    		java -Xmx20000m -Djava.library.path=/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx -jar ./jars/2EVRP_cplex.jar "ExperimentsAllSets.txt" $i "v2.xml" $j 8
 	done
 done
+
+1. Mirar resultados ahorita
+2. Ajustar para que el tiempo limite del assembly y el mip no sean los mismos
+3. Volver a sacar los .jar
+4. Correr los resultados, primero para el problema de location!

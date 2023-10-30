@@ -103,7 +103,7 @@ public class SecondEchelonLKH implements Split{
 			r.setAttribute(RouteAttribute.LOAD, load);
 			s.addRoute(r);
 		}
-	
+		s.setOF(of);
 		return s;
 	}
 }

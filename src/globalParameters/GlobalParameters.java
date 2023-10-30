@@ -50,6 +50,12 @@ public class GlobalParameters {
 	// MSH  parameters:
 		
 		/**
+		 * Time limit for the mip improvement procedure:
+		 */
+		public static final int MIP_IMPROVEMENT_TIME_LIMIT = GlobalParametersReader.<Integer>get("MIP_IMPROVEMENT_TIME_LIMIT", Integer.class);
+		
+		
+		/**
 		 * Maximum number of times the improvement mip may be used
 		 */
 		public static final int IMPROVEMENT_MIP_MAX_ITERATIONS = GlobalParametersReader.<Integer>get("IMPROVEMENT_MIP_MAX_ITERATIONS", Integer.class);

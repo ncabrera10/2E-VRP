@@ -38,7 +38,7 @@ public class Main_cplex {
 				
 			// Select the instance you want to run, (i.e., the line of the txt file): 1-285
 			
-				int current_instance = 1; 
+				int current_instance = 11; 
 				
 			// Configuration file name:
 				
